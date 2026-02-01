@@ -82,6 +82,19 @@ export function createThumbnail(blob: Blob, size = 100): Promise<string> {
   });
 }
 
+/** Save blob to device (Downloads folder on desktop, device gallery/downloads on mobile) */
+export function saveBlobToDevice(blob: Blob, filename: string): void {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 export function createVideoThumbnail(videoUrl: string, size = 100): Promise<string> {
   return new Promise((resolve, reject) => {
     const video = document.createElement('video');

@@ -6,7 +6,7 @@ import { CameraView } from './CameraView';
 import { ModeSlider } from './ModeSlider';
 import { CameraControls } from './CameraControls';
 import { useCameraStore } from '@/lib/store';
-import { processCapturedImage, processCanvasToBlob, createThumbnail, createVideoThumbnail } from '@/lib/canvas-utils';
+import { processCapturedImage, processCanvasToBlob, createThumbnail, createVideoThumbnail, saveBlobToDevice } from '@/lib/canvas-utils';
 import { RESOLUTIONS } from '@/lib/constants';
 import { useVoiceCommand } from '@/hooks/useVoiceCommand';
 import { Gallery } from '../Gallery';
@@ -69,6 +69,8 @@ export function Camera() {
           thumbnail,
           timestamp: Date.now(),
         });
+        const filename = `AI-Camera-${new Date().toISOString().replace(/[:.]/g, '-')}.jpg`;
+        saveBlobToDevice(blob, filename);
       } catch (err) {
         console.error('Capture failed:', err);
       } finally {
@@ -105,6 +107,8 @@ export function Camera() {
         thumbnail,
         timestamp: Date.now(),
       });
+      const filename = `AI-Camera-${new Date().toISOString().replace(/[:.]/g, '-')}.webm`;
+      saveBlobToDevice(blob, filename);
       mediaRecorderRef.current = null;
     };
 
@@ -161,8 +165,9 @@ export function Camera() {
         onVoiceToggle={handleVoiceToggle}
         voiceActive={listening}
       />
-      <div className="absolute top-4 left-4 z-20 flex gap-2">
-        {(settings.upperButtons?.gallery ?? true) && (
+      <div className="absolute bottom-44 left-4 right-4 z-20 flex justify-between items-center">
+        <div className="flex gap-2 items-center">
+          {(settings.upperButtons?.gallery ?? true) && (
           <button
             onClick={() => setShowGallery(true)}
             className="w-14 h-14 rounded-xl overflow-hidden border-2 border-white/30 bg-black/30 flex items-center justify-center"
@@ -170,6 +175,7 @@ export function Camera() {
             <LastPhotoThumbnail />
           </button>
         )}
+        </div>
         <button
           onClick={() => setShowSettings(true)}
           className="p-2 rounded-full bg-black/30 hover:bg-black/50"
