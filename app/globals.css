@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --camera-bg: #0a0a0a;
+  --camera-accent: #00d4aa;
+  --camera-overlay: rgba(0, 0, 0, 0.6);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background: var(--camera-bg);
+  color: white;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Safe area for mobile notch */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .safe-top {
+    padding-top: calc(env(safe-area-inset-top) + 0.5rem);
+  }
+}
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);
+  }
+}
+
+/* Camera full screen */
+.camera-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* Hide scrollbar for mode slider */
+.mode-slider::-webkit-scrollbar {
+  display: none;
+}
+.mode-slider {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Grid lines */
+.camera-grid {
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px);
+  background-size: calc(100% / 3) calc(100% / 3);
+  pointer-events: none;
+}
+
+/* Shutter animation */
+@keyframes shutter-flash {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.shutter-flash {
+  animation: shutter-flash 0.2s ease-out;
+}
