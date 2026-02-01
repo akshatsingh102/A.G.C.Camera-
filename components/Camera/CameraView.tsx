@@ -59,6 +59,7 @@ export function CameraView({
       streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
+        videoRef.current.play().catch(() => {});
       }
       setReady(true);
       setError(null);
@@ -162,12 +163,21 @@ export function CameraView({
         autoPlay
         playsInline
         muted
-        className="hidden"
+        className={clsx(
+          'absolute inset-0 w-full h-full object-cover',
+          isPortrait && 'hidden',
+          facingMode === 'user' && 'scale-x-[-1]'
+        )}
+        style={{
+          transform: `scale(${zoom})`,
+          transformOrigin: 'center center',
+        }}
       />
       <canvas
         ref={canvasRef}
         className={clsx(
           'absolute inset-0 w-full h-full object-cover',
+          !isPortrait && 'hidden',
           facingMode === 'user' && 'scale-x-[-1]'
         )}
         style={{
