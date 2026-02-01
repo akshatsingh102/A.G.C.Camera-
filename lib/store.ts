@@ -22,6 +22,13 @@ interface CameraState {
   clearGallery: () => void;
 }
 
+const defaultUpperButtons = {
+  flash: true,
+  grid: true,
+  timer: true,
+  gallery: true,
+};
+
 const defaultSettings: CameraSettings = {
   flash: 'off',
   grid: false,
@@ -34,6 +41,7 @@ const defaultSettings: CameraSettings = {
   aiSceneDetection: true,
   aiEnhance: false,
   aiStabilization: true,
+  upperButtons: defaultUpperButtons,
 };
 
 export const useCameraStore = create<CameraState>()(
